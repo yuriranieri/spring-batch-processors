@@ -7,11 +7,12 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class ContaBancariaStep {
 
     @Autowired
@@ -29,7 +30,7 @@ public class ContaBancariaStep {
     @Bean
     public Step stepConta(ItemReader<Cliente> reader,
                           ItemProcessor<Cliente, Conta> processor,
-                          ItemWriter<Conta> writer) {
+                          CompositeItemWriter<Conta> writer) {
         return stepBuilderFactory.get("stepConta")
                 .<Cliente, Conta>chunk(100)
                 .reader(reader)

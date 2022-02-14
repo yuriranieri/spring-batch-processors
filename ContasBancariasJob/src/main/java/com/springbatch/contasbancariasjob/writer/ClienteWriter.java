@@ -3,9 +3,9 @@ package com.springbatch.contasbancariasjob.writer;
 import com.springbatch.contasbancariasjob.dominio.Cliente;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class ClienteWriter {
 
     @Bean
