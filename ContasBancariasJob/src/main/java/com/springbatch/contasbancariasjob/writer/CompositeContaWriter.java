@@ -5,6 +5,7 @@ import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.batch.item.support.builder.CompositeItemWriterBuilder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +13,9 @@ import org.springframework.stereotype.Component;
 public class CompositeContaWriter {
 
     @Bean
-    public CompositeItemWriter<Conta> contaCompositeItemWriter(FlatFileItemWriter<Conta> fileItemWriter,
-                                                               JdbcBatchItemWriter<Conta> contaJdbcBatchItemWriter) {
+    public CompositeItemWriter<Conta> contaCompositeItemWriter(
+            @Qualifier("fileItemWriter") FlatFileItemWriter<Conta> fileItemWriter,
+            JdbcBatchItemWriter<Conta> contaJdbcBatchItemWriter) {
         return new CompositeItemWriterBuilder<Conta>()
                 .delegates(fileItemWriter, contaJdbcBatchItemWriter)
                 .build();

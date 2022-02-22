@@ -7,8 +7,10 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.support.CompositeItemWriter;
+import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.support.ClassifierCompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -30,12 +32,16 @@ public class ContaBancariaStep {
     @Bean
     public Step stepConta(ItemReader<Cliente> reader,
                           ItemProcessor<Cliente, Conta> processor,
-                          CompositeItemWriter<Conta> writer) {
+                          ClassifierCompositeItemWriter<Conta> writer,
+                          @Qualifier("clienteInvalidoContaWriter") FlatFileItemWriter<Conta> clienteInvalidoWriter,
+                          @Qualifier("fileItemWriter") FlatFileItemWriter<Conta> clienteValidoWriter) {
         return stepBuilderFactory.get("stepConta")
                 .<Cliente, Conta>chunk(100)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
+                .stream(clienteInvalidoWriter)
+                .stream(clienteValidoWriter)
                 .build();
     }
 

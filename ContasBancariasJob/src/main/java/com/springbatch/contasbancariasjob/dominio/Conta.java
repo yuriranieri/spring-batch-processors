@@ -2,13 +2,17 @@ package com.springbatch.contasbancariasjob.dominio;
 
 public class Conta {
 
-    private final String tipo;
-    private final Double limite;
+    private String tipo;
+    private Double limite;
     private final String cliente;
 
     public Conta(String tipo, Double limite, String cliente) {
         this.tipo = tipo;
         this.limite = limite;
+        this.cliente = cliente;
+    }
+
+    public Conta(String cliente) {
         this.cliente = cliente;
     }
 

@@ -1,5 +1,6 @@
 package com.springbatch.contasbancariasjob.enums;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public enum TipoConta {
@@ -7,7 +8,8 @@ public enum TipoConta {
     PRATA(0.0, 3000.0, 500.0),
     OURO(3001.0, 5000.0, 1000.0),
     PLATINA(5001.0, 10000.0, 2500.0),
-    DIAMANTE(10001.0, Double.MAX_VALUE, 5000.0);
+    DIAMANTE(10001.0, Double.MAX_VALUE, 5000.0),
+    INVALIDA(null, null, null);
 
     private final Double valorInicial;
     private final Double valorFinal;
@@ -20,6 +22,10 @@ public enum TipoConta {
     }
 
     public static TipoConta findByFaixaSalarial(Double faixaSalarial) {
+        if (Objects.isNull(faixaSalarial)) {
+            return INVALIDA;
+        }
+
         return Stream.of(values())
                 .filter(conta -> faixaSalarial >= conta.getValorInicial() && faixaSalarial <= conta.getValorFinal())
                 .findFirst()
